@@ -15,9 +15,6 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<baomidou.version>3.4.0</baomidou.version>
-<!--		<vv.project.version>1.0.0</vv.project.version>-->
-
-<!--		<quotation-stock-calc-common.version>0.0.1-SNAPSHOT</quotation-stock-calc-common.version>-->
 <!--		<lineshape-calc-common.version>0.0.1-SNAPSHOT</lineshape-calc-common.version>-->
 
 <!--		<vv.gateway-api.version>1.2.58-SNAPSHOT</vv.gateway-api.version>-->
