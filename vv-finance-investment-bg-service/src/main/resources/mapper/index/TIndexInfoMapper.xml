@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.index.TIndexInfoMapper">
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.index.TIndexInfo">
+        <!--@mbg.generated-->
+        <!--@Table t_index_info-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="date" jdbcType="BIGINT" property="date"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="open" jdbcType="DECIMAL" property="open"/>
+        <result column="yclose" jdbcType="DECIMAL" property="yclose"/>
+        <result column="high" jdbcType="DECIMAL" property="high"/>
+        <result column="low" jdbcType="DECIMAL" property="low"/>
+        <result column="vol" jdbcType="BIGINT" property="vol"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="amplitude" jdbcType="DECIMAL" property="amplitude"/>
+        <result column="increase" jdbcType="DECIMAL" property="increase"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, code, `name`, `date`, price, `open`, yclose, high, low, vol, amount, amplitude,
+        increase, create_time, update_time
+    </sql>
+
+    <insert id="batchInsert" parameterType="list">
+        REPLACE into t_index_info (code, name, date, price, open, yclose, high, low, vol, amount, amplitude, increase)
+                values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code}, #{item.name}, #{item.date},
+             #{item.price}, #{item.open}, #{item.yclose}, #{item.high},
+             #{item.low}, #{item.vol}, #{item.amount}, #{item.amplitude}, #{item.increase})
+        </foreach>
+    </insert>
+</mapper>

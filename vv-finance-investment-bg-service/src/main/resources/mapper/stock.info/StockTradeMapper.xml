@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.info.mapper.StockTradeMapper">
+    <!--    <insert id="batchSaveOrUpdate" parameterType="list">-->
+
+    <!--        REPLACE into t_stock_trade (code,name,stockTime,tickerid,price,qty,type,cancelflag,direction)-->
+    <!--        values-->
+    <!--        <foreach collection="list" item="item"  separator=",">-->
+    <!--            (#{item.code},#{item.name},#{item.stockTime},-->
+    <!--            #{item.tickerid},  #{item.price}, #{item.qty}, #{item.type}, #{item.cancelflag},#{item.direction})-->
+    <!--        </foreach>-->
+    <!--    </insert>-->
+</mapper>

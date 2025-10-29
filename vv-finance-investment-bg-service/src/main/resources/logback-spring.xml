@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <springProperty scope="context" name="PORT" source="server.port" default = ""/>
+    <property name="log_dir" value="/data/logs/bg/${PORT}" />
+    <property name="default_log" value="${log_dir}/vv-bg-service"/>
+    <property name="error_log" value="${log_dir}/vv-bg-service-error"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8">
+            <pattern>
+               %d{yyyy-MM-dd HH:mm:ss.SSS},[%X{TraceId}] [%thread] %highlight(%-5level) %cyan(%logger{15}) - %highlight(%msg) %n%exception
+            </pattern>
+        </encoder>
+    </appender>
+
+
+         <!-- 默认日志 按日切分 -->
+    <appender name="default" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${default_log}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${default_log}.%d{yyyy-MM-dd}-%i.gz</fileNamePattern>
+             <maxHistory>3</maxHistory>
+            <maxFileSize>2GB</maxFileSize>
+            <totalSizeCap>40GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS},[%X{TraceId}] [%thread] %-5level %logger{36} %method:%L - %msg %n
+            </pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- ERROR -->
+    <appender name="common-error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${error_log}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${error_log}.%d{yyyy-MM-dd}-%i.gz</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <maxFileSize>2GB</maxFileSize>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS},[%X{TraceId}] [%thread] %-5level %logger{36} %method:%L - %msg%n%exception
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+	<logger name="com.vv.finance.investment" level="DEBUG"/>
+    <!-- ROOT -->
+    <root level="INFO">
+        <appender-ref ref="default"/>
+        <appender-ref ref="common-error"/>
+        <appender-ref ref="console"/>
+    </root>
+
+
+    <logger name="top.javatool.canal.client.client" level="WARNING" additivity="false" />
+
+</configuration>

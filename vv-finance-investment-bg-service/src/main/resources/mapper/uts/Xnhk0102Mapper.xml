@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.Xnhk0102Mapper">
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.uts.Xnhk0102">
+        <!--@mbg.generated-->
+        <!--@Table XNHK0102-->
+        <result column="seccode" jdbcType="VARCHAR" property="seccode"/>
+        <result column="F001V" jdbcType="VARCHAR" property="f001v"/>
+        <result column="F002V" jdbcType="VARCHAR" property="f002v"/>
+        <result column="F003V" jdbcType="VARCHAR" property="f003v"/>
+        <result column="F004D" jdbcType="BIGINT" property="f004d"/>
+        <result column="F005V" jdbcType="VARCHAR" property="f005v"/>
+        <result column="F006V" jdbcType="VARCHAR" property="f006v"/>
+        <result column="F007N" jdbcType="DECIMAL" property="f007n"/>
+        <result column="F008V" jdbcType="VARCHAR" property="f008v"/>
+        <result column="F009N" jdbcType="DECIMAL" property="f009n"/>
+        <result column="F010N" jdbcType="DECIMAL" property="f010n"/>
+        <result column="F011D" jdbcType="BIGINT" property="f011d"/>
+        <result column="F012D" jdbcType="BIGINT" property="f012d"/>
+        <result column="F013D" jdbcType="BIGINT" property="f013d"/>
+        <result column="F014D" jdbcType="BIGINT" property="f014d"/>
+        <result column="F015D" jdbcType="BIGINT" property="f015d"/>
+        <result column="F016D" jdbcType="BIGINT" property="f016d"/>
+        <result column="F017D" jdbcType="BIGINT" property="f017d"/>
+        <result column="F018V" jdbcType="VARCHAR" property="f018v"/>
+        <result column="F019V" jdbcType="VARCHAR" property="f019v"/>
+        <result column="F020N" jdbcType="DECIMAL" property="f020n"/>
+        <result column="F021N" jdbcType="DECIMAL" property="f021n"/>
+        <result column="F022D" jdbcType="BIGINT" property="f022d"/>
+        <result column="F023N" jdbcType="DECIMAL" property="f023n"/>
+        <result column="F024N" jdbcType="DECIMAL" property="f024n"/>
+        <result column="F025N" jdbcType="DECIMAL" property="f025n"/>
+        <result column="F026N" jdbcType="DECIMAL" property="f026n"/>
+        <result column="F027N" jdbcType="DECIMAL" property="f027n"/>
+        <result column="F028N" jdbcType="DECIMAL" property="f028n"/>
+        <result column="F029N" jdbcType="DECIMAL" property="f029n"/>
+        <result column="F030N" jdbcType="DECIMAL" property="f030n"/>
+        <result column="F031N" jdbcType="DECIMAL" property="f031n"/>
+        <result column="F032N" jdbcType="DECIMAL" property="f032n"/>
+        <result column="F033N" jdbcType="DECIMAL" property="f033n"/>
+        <result column="F034N" jdbcType="DECIMAL" property="f034n"/>
+        <result column="F035N" jdbcType="DECIMAL" property="f035n"/>
+        <result column="F036N" jdbcType="DECIMAL" property="f036n"/>
+        <result column="F037N" jdbcType="DECIMAL" property="f037n"/>
+        <result column="F038N" jdbcType="DECIMAL" property="f038n"/>
+        <result column="F039N" jdbcType="DECIMAL" property="f039n"/>
+        <result column="F040N" jdbcType="DECIMAL" property="f040n"/>
+        <result column="F041N" jdbcType="DECIMAL" property="f041n"/>
+        <result column="F042N" jdbcType="DECIMAL" property="f042n"/>
+        <result column="F043N" jdbcType="DECIMAL" property="f043n"/>
+        <result column="F044N" jdbcType="DECIMAL" property="f044n"/>
+        <result column="F045N" jdbcType="DECIMAL" property="f045n"/>
+        <result column="F046N" jdbcType="DECIMAL" property="f046n"/>
+        <result column="F047N" jdbcType="DECIMAL" property="f047n"/>
+        <result column="F048N" jdbcType="DECIMAL" property="f048n"/>
+        <result column="F049N" jdbcType="BIGINT" property="f049n"/>
+        <result column="F050N" jdbcType="DECIMAL" property="f050n"/>
+        <result column="F051N" jdbcType="DECIMAL" property="f051n"/>
+        <result column="F052N" jdbcType="DECIMAL" property="f052n"/>
+        <result column="F053N" jdbcType="DECIMAL" property="f053n"/>
+        <result column="F054N" jdbcType="DECIMAL" property="f054n"/>
+        <result column="F055N" jdbcType="DECIMAL" property="f055n"/>
+        <result column="F056N" jdbcType="DECIMAL" property="f056n"/>
+        <result column="F057N" jdbcType="DECIMAL" property="f057n"/>
+        <result column="F058N" jdbcType="DECIMAL" property="f058n"/>
+        <result column="F059N" jdbcType="DECIMAL" property="f059n"/>
+        <result column="F060N" jdbcType="DECIMAL" property="f060n"/>
+        <result column="F061N" jdbcType="DECIMAL" property="f061n"/>
+        <result column="F062N" jdbcType="DECIMAL" property="f062n"/>
+        <result column="F063N" jdbcType="DECIMAL" property="f063n"/>
+        <result column="F064N" jdbcType="DECIMAL" property="f064n"/>
+        <result column="F065N" jdbcType="DECIMAL" property="f065n"/>
+        <result column="F066N" jdbcType="DECIMAL" property="f066n"/>
+        <result column="F067N" jdbcType="DECIMAL" property="f067n"/>
+        <result column="F068N" jdbcType="DECIMAL" property="f068n"/>
+        <result column="F069N" jdbcType="DECIMAL" property="f069n"/>
+        <result column="F070N" jdbcType="DECIMAL" property="f070n"/>
+        <result column="F071N" jdbcType="BIGINT" property="f071n"/>
+        <result column="F072D" jdbcType="BIGINT" property="f072d"/>
+        <result column="F073V" jdbcType="VARCHAR" property="f073v"/>
+        <result column="F074V" jdbcType="VARCHAR" property="f074v"/>
+        <result column="F075N" jdbcType="DECIMAL" property="f075n"/>
+        <result column="F076V" jdbcType="VARCHAR" property="f076v"/>
+        <result column="F077N" jdbcType="DECIMAL" property="f077n"/>
+        <result column="F078N" jdbcType="DECIMAL" property="f078n"/>
+        <result column="F079N" jdbcType="DECIMAL" property="f079n"/>
+        <result column="F080N" jdbcType="DECIMAL" property="f080n"/>
+        <result column="F081N" jdbcType="DECIMAL" property="f081n"/>
+        <result column="F082N" jdbcType="DECIMAL" property="f082n"/>
+        <result column="F083N" jdbcType="DECIMAL" property="f083n"/>
+        <result column="F084N" jdbcType="DECIMAL" property="f084n"/>
+        <result column="F085N" jdbcType="DECIMAL" property="f085n"/>
+        <result column="F086N" jdbcType="DECIMAL" property="f086n"/>
+        <result column="F087N" jdbcType="DECIMAL" property="f087n"/>
+        <result column="F088N" jdbcType="DECIMAL" property="f088n"/>
+        <result column="F089N" jdbcType="DECIMAL" property="f089n"/>
+        <result column="F090N" jdbcType="DECIMAL" property="f090n"/>
+        <result column="F091N" jdbcType="DECIMAL" property="f091n"/>
+        <result column="F092N" jdbcType="DECIMAL" property="f092n"/>
+        <result column="F093N" jdbcType="DECIMAL" property="f093n"/>
+        <result column="F094N" jdbcType="DECIMAL" property="f094n"/>
+        <result column="F095N" jdbcType="DECIMAL" property="f095n"/>
+        <result column="F096N" jdbcType="DECIMAL" property="f096n"/>
+        <result column="F097N" jdbcType="DECIMAL" property="f097n"/>
+        <result column="F098N" jdbcType="DECIMAL" property="f098n"/>
+        <result column="F099N" jdbcType="DECIMAL" property="f099n"/>
+        <result column="Create_Date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="Modified_Date" jdbcType="TIMESTAMP" property="modifiedDate"/>
+        <result column="XDBMASK" jdbcType="BIGINT" property="xdbmask"/>
+        <result column="F003N" jdbcType="DECIMAL" property="hisHighestPrice"/>
+        <result column="F004N" jdbcType="DECIMAL" property="hisLowestPrice"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        seccode, F001V, F002V, F003V, F004D, F005V, F006V, F007N, F008V, F009N, F010N, F011D,
+        F012D, F013D, F014D, F015D, F016D, F017D, F018V, F019V, F020N, F021N, F022D, F023N,
+        F024N, F025N, F026N, F027N, F028N, F029N, F030N, F031N, F032N, F033N, F034N, F035N,
+        F036N, F037N, F038N, F039N, F040N, F041N, F042N, F043N, F044N, F045N, F046N, F047N,
+        F048N, F049N, F050N, F051N, F052N, F053N, F054N, F055N, F056N, F057N, F058N, F059N,
+        F060N, F061N, F062N, F063N, F064N, F065N, F066N, F067N, F068N, F069N, F070N, F071N,
+        F072D, F073V, F074V, F075N, F076V, F077N, F078N, F079N, F080N, F081N, F082N, F083N,
+        F084N, F085N, F086N, F087N, F088N, F089N, F090N, F091N, F092N, F093N, F094N, F095N,
+        F096N, F097N, F098N, F099N, Create_Date, Modified_Date, XDBMASK
+    </sql>
+
+    <select id="queryMarketData" resultMap="BaseResultMap">
+        SELECT *,
+               (SELECT F003N FROM XNHK0901 WHERE SECCODE = #{stockCode} ORDER BY F003N DESC LIMIT 1) AS F003N,
+               (SELECT F004N FROM XNHK0901 WHERE SECCODE = #{stockCode} AND F004N IS NOT NULL ORDER BY F004N LIMIT 1) AS F004N
+        FROM XNHK0102
+        WHERE seccode = #{stockCode}
+    </select>
+
+    <select id="listMarketData" parameterType="list" resultMap="BaseResultMap">
+        SELECT *
+        FROM XNHK0102
+                WHERE seccode IN
+        <foreach collection="list" separator="," open="(" close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectStockMarketData" resultType="com.vv.finance.investment.bg.entity.uts.Xnhk0102">
+        SELECT * FROM XNHK0102 where seccode = #{stockCode} limit 1
+    </select>
+</mapper>

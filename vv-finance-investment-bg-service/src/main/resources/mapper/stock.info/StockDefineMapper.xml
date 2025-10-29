@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.info.mapper.StockDefineMapper">
+    <select id="queryStock"  resultType="com.vv.finance.investment.bg.stock.info.StockDefine">
+                        SELECT
+                            *
+                        FROM
+                            (
+                                SELECT
+                                    s. CODE AS `code`,
+                                    s. NAME AS `name`,
+                                    s.marketcode AS marketcode,
+                                    s.instrument AS instrument,
+                                    '0' AS freetext
+                                FROM
+                                    t_stock_define s
+                                WHERE
+                                    (
+                                    s.`name` LIKE CONCAT('%',#{key,jdbcType=VARCHAR},'%')
+                                    OR s.`code` LIKE CONCAT('%',#{key,jdbcType=VARCHAR},'%')
+                                    )
+                        UNION ALL
+                                SELECT
+                                    t.`code` AS `code`,
+                                    t.`name` AS `name`,
+                                    '' AS marketcode,
+                                    '' AS instrument,
+                                    '1' AS freetext
+                                FROM
+                                    t_index_info t
+                                WHERE
+                                    (
+                                    t.`name` LIKE CONCAT('%',#{key,jdbcType=VARCHAR},'%')
+                                    OR t.`code` LIKE CONCAT('%',#{key,jdbcType=VARCHAR},'%')
+                                    )
+                            ) a
+                               <where>
+                                   <if test="list !=null and list.size()>0">
+                                   a.`CODE` not in
+                                   <foreach collection="list" separator="," open="(" close=")" item="item">
+                                       #{item,jdbcType=VARCHAR}
+                                   </foreach>
+                                   </if>
+                               </where>
+                        ORDER BY
+                            a.`CODE`
+                            LIMIT #{num}
+    </select>
+    <select id="selectStockCodeList" resultType="java.lang.String">
+        select code from t_stock_define where stock_type = 1;
+    </select>
+
+    <select id="selectNoCompStocks" resultType="java.lang.Long">
+        select t1.id from t_stock_define t1
+        left join (select code, industry_code from t_stock_define where stock_type = 1) t2 on t1.code = t2.industry_code
+        where t1.stock_type = 12 and t2.code is null;
+    </select>
+
+    <update id="updateStockDefineById" parameterType="com.vv.finance.investment.bg.stock.info.StockDefine">
+        update t_stock_define set
+                                  stock_name = #{stockName},
+                                  name = #{name},
+                                  shortname = #{shortname},
+                                  industry_code = #{industryCode},
+                                  marketcode = #{marketcode},
+                                  currency = #{currency},
+                                  instrument = #{instrument},
+                                  producttype = #{producttype},
+                                  spread = #{spread},
+                                  lotsize = #{lotsize},
+                                  preclose = #{preclose},
+                                  testflag = #{testflag},
+                                  listingdate = #{listingdate},
+                                  delistingdate = #{delistingdate},
+                                  counversionratio = #{counversionratio},
+                                  strikeprice1 = #{strikeprice1},
+                                  strikeprice2 = #{strikeprice2},
+                                  suspension = #{suspension},
+                                  update_time = #{updateTime}
+
+        where id = #{id};
+    </update>
+
+    <insert id="batchSaveOrUpdate" parameterType="list">
+        insert into t_stock_define
+        (code,name,shortname,stock_name,industry_code,marketcode,currency,isincode,instrument,producttype,stock_type,spread,lotsize,
+        preclose,vcmflag,shortsell,casflag,ccassflag,dummyflag,testflag,stampdutyflag,listingdate,delistingdate,freetext,posflag,posupper,
+        poslower,enfflag,accured,couponrate,counversionratio,strikeprice1,strikeprice2,maturitydate,callput,style,warrenttype,callprice,
+        decimalprice,entitlement,decimalentitlement,nowarrants,nounderlying,suspension,update_user_id,update_stock_name_time,domain_code)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.code}, #{item.name}, #{item.shortname}, #{item.stockName}, #{item.industryCode}, #{item.marketcode}, #{item.currency},
+            #{item.isincode}, #{item.instrument}, #{item.producttype}, #{item.stockType}, #{item.spread}, #{item.lotsize}, #{item.preclose},
+            #{item.vcmflag}, #{item.shortsell}, #{item.casflag}, #{item.ccassflag}, #{item.dummyflag}, #{item.testflag}, #{item.stampdutyflag},
+            #{item.listingdate}, #{item.delistingdate}, #{item.freetext}, #{item.posflag}, #{item.posupper}, #{item.poslower}, #{item.enfflag},
+            #{item.accured}, #{item.couponrate}, #{item.counversionratio}, #{item.strikeprice1}, #{item.strikeprice2}, #{item.maturitydate},
+            #{item.callput}, #{item.style}, #{item.warrenttype}, #{item.callprice}, #{item.decimalprice}, #{item.entitlement},
+            #{item.decimalentitlement}, #{item.nowarrants}, #{item.nounderlying}, #{item.suspension}, #{item.updateUserId}, #{item.updateStockNameTime}, #{item.domainCode}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+            name = values(name), shortname = values(shortname), stock_name = values(stock_name),
+            industry_code = values(industry_code), marketcode = values(marketcode), currency = values(currency), isincode = values(isincode),
+            instrument = values(instrument), producttype = values(producttype), stock_type = values(stock_type), spread = values(spread),
+            lotsize = values(lotsize), preclose = values(preclose), vcmflag = values(vcmflag), shortsell = values(shortsell),
+            casflag = values(casflag), ccassflag = values(ccassflag), dummyflag = values(dummyflag), testflag = values(testflag),
+            stampdutyflag = values(stampdutyflag), listingdate = values(listingdate), delistingdate = values(delistingdate),
+            freetext = values(freetext), posflag = values(posflag), posupper = values(posupper), poslower = values(poslower),
+            enfflag = values(enfflag), accured = values(accured), couponrate = values(couponrate), counversionratio = values(counversionratio),
+            strikeprice1 = values(strikeprice1), strikeprice2 = values(strikeprice2), maturitydate = values(maturitydate), callput = values(callput),
+            style = values(style), warrenttype = values(warrenttype), callprice = values(callprice), decimalprice = values(decimalprice),
+            entitlement = values(entitlement), decimalentitlement = values(decimalentitlement), nowarrants = values(nowarrants),
+            nounderlying = values(nounderlying), suspension = values(suspension), update_user_id = values(update_user_id), update_stock_name_time = values(update_stock_name_time), domain_code = values(domain_code);
+    </insert>
+
+    <select id="pageStockDefine" resultType="com.vv.finance.investment.bg.stock.info.StockDefine">
+        select
+        *
+        from
+        t_stock_define t
+        where
+        t.stock_type = 1
+        <if test="req.stockCode != null and req.stockCode.trim() != ''">
+            and SUBSTRING(code, 1, LOCATE('.', code) - 1) like concat('%', #{req.stockCode}, '%')
+        </if>
+        <if test="req.marketcode != null and req.marketcode.trim() != ''">
+            and marketcode like concat('%', #{req.marketcode}, '%')
+        </if>
+        <if test="req.industryCode != null and req.industryCode.trim() != ''">
+            and industry_code like concat('%', #{req.industryCode}, '%')
+        </if>
+        order by t.code asc
+    </select>
+</mapper>

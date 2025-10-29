@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.index.TIndexDefineMapper">
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.index.TIndexDefine">
+        <!--@mbg.generated-->
+        <!--@Table t_index_define-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="indexsource" jdbcType="VARCHAR" property="indexsource"/>
+        <result column="currency" jdbcType="VARCHAR" property="currency"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, code, indexsource, currency, create_time, update_time
+    </sql>
+
+    <insert id="batchInsert" parameterType="list">
+        REPLACE into t_index_define (code, indexsource, currency)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code}, #{item.indexsource}, #{item.currency})
+        </foreach>
+    </insert>
+</mapper>

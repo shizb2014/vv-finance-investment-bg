@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vv.finance.investment.bg.stock.trade.mapper.StockTradeStatisticsDetailMapper">
+    <insert id="batchSaveOrUpdate" parameterType="list">
+        insert into t_trade_statistics_detail
+        (code,time,capital_out,capital_in,capital_net)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code},#{item.time},#{item.capitalOut},
+            #{item.capitalIn}, #{item.capitalNet}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        capital_out = values(capital_out),
+        capital_in = values(capital_in),
+        capital_net = values(capital_net)
+    </insert>
+</mapper>

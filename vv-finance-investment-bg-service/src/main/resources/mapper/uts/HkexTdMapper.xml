@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.HkexTdMapper">
+  <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.uts.HkexTd">
+    <!--@mbg.generated-->
+    <!--@Table HKEX_TD-->
+    <id column="RDATE" jdbcType="BIGINT" property="rdate" />
+    <result column="ISTRADE" jdbcType="VARCHAR" property="istrade" />
+    <result column="Create_Date" jdbcType="DATE" property="createDate" />
+    <result column="Modified_Date" jdbcType="DATE" property="modifiedDate" />
+    <result column="XDBMASK" jdbcType="BIGINT" property="xdbmask" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    RDATE, ISTRADE, Create_Date, Modified_Date, XDBMASK
+  </sql>
+</mapper>

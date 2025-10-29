@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.Xnhk0127Mapper">
+
+    <select id="listByDbmask"
+            resultType="com.vv.finance.investment.bg.entity.information.CompanyTrendsMergeEntity">
+        select SECCODE,
+               #{type}                                  type,
+               F006V                                    content,
+               REPLACE(F003D, '-', '')                  releaseDate,
+               REPLACE(F003D, '-', '')                  order_date,
+               REPLACE(F003D, '-', '')                  date1,
+               null                                     date2,
+               XDBMASK                                  sxdbmask,
+               md5(concat(#{code}, x.SECCODE, x.F003D)) uni
+        from vv_uts.XNHK0127 x
+        where F003D is not null
+          and x.xdbmask > #{dbmask}
+        order by x.xdbmask
+    </select>
+</mapper>

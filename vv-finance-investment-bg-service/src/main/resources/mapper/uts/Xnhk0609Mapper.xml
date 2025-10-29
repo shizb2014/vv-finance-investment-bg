@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.Xnhk0609Mapper">
+    <select id="queryBrokerTop5Sum" resultType="com.vv.finance.investment.bg.mapper.uts.Xnhk0609Mapper">
+        select SECCODE, SUM(F004N) as F004N
+        from (
+                 select SECCODE, F004N
+                 from XNHK0609
+                 where SECCODE = #{stockCode}
+                   and f001d = #{f001d}
+                 order by F004N desc limit 5) a
+        group by SECCODE
+    </select>
+
+    <select id="queryBrokerTop10Sum" resultType="com.vv.finance.investment.bg.mapper.uts.Xnhk0609Mapper">
+        select SECCODE, SUM(F004N) as F004N
+        from (
+                 select SECCODE, F004N
+                 from XNHK0609
+                 where SECCODE = #{stockCode}
+                   and f001d = #{f001d}
+                 order by F004N desc limit 10) a
+        group by SECCODE
+    </select>
+
+    <select id="queryBrokerTop20Sum" resultType="com.vv.finance.investment.bg.mapper.uts.Xnhk0609Mapper">
+        select SECCODE, SUM(F004N) as F004N
+        from (
+                 select SECCODE, F004N
+                 from XNHK0609
+                 where SECCODE = #{stockCode}
+                   and f001d = #{f001d}
+                 order by F004N desc limit 20) a
+        group by SECCODE
+    </select>
+
+    <select id="getBrokerIdList" resultType="java.lang.String">
+        select distinct f002v
+        from xnhk0609
+    </select>
+
+
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.info.mapper.HkStockRelationMapper">
+
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.stock.info.HkStockRelation">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="stockId" column="stock_id" jdbcType="BIGINT"/>
+        <result property="sourceCode" column="source_code" jdbcType="VARCHAR"/>
+        <result property="innerCode" column="inner_code" jdbcType="VARCHAR"/>
+        <result property="securityStatus" column="security_status" jdbcType="INTEGER"/>
+        <result property="bizType" column="biz_type" jdbcType="INTEGER"/>
+        <result property="bizTime" column="biz_time" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,stock_id,source_code,
+        inner_code,security_status,biz_type,
+        biz_time,remark,create_time,
+        update_time
+    </sql>
+
+    <select id="selectStockIdByInnerCode" resultType="java.lang.Long">
+        select stock_id from t_hk_stock_relation where inner_code = #{innerCode} and security_status = 0;
+    </select>
+
+    <select id="selectMaxStockId" resultType="java.lang.Long">
+        select max(stock_id) from t_hk_stock_relation;
+    </select>
+
+    <select id="selectInnerCodeList" resultType="java.lang.String">
+        select inner_code from t_hk_stock_relation where source_code = #{sourceCode} and security_status = 0;
+    </select>
+
+    <update id="updateSelectiveByStockId" parameterType="com.vv.finance.investment.bg.stock.info.HkStockRelation">
+        update t_hk_stock_relation
+        <set>
+            <if test="sourceCode != null">
+                source_code = #{sourceCode,jdbcType=VARCHAR},
+            </if>
+            <if test="innerCode != null">
+                inner_code = #{innerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="securityStatus != null">
+                security_status = #{securityStatus,jdbcType=INTEGER},
+            </if>
+            <if test="bizType != null">
+                biz_type = #{bizType,jdbcType=INTEGER},
+            </if>
+            <if test="bizTime != null">
+                biz_time = #{bizTime,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where stock_id = #{stockId,jdbcType=BIGINT}
+    </update>
+</mapper>

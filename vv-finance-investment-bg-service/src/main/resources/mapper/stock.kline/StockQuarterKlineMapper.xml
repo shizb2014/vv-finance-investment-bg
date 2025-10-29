@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.kline.mapper.StockQuarterKlineMapper">
+<!--    <insert id="batchInsert" parameterType="list">-->
+<!--        replace into t_stock_quarter_kline (code,minute_k_num,stockTime,open,high,low,close,pre_close,volume,amount,chg,chg_pct,ma_a,ma_b,mode,adjhkt,ma_c)-->
+<!--        values-->
+<!--        <foreach collection="list" item="item" separator=",">-->
+<!--            (#{item.code},#{item.minuteKNum},#{item.stockTime},-->
+<!--            #{item.open},#{item.high},#{item.low},#{item.close},-->
+<!--            #{item.preClose},#{item.volume},#{item.amount},#{item.chg},-->
+<!--            #{item.chgPct},#{item.maA},#{item.maB},#{item.mode},#{item.adjhkt},#{item.maC})-->
+<!--        </foreach>-->
+<!--    </insert>-->
+</mapper>

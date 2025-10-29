@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.info.mapper.StockSnapshotMapper">
+    <resultMap id="baseResult" type="com.vv.finance.common.entity.common.StockSnapshot">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="time" jdbcType="BIGINT" property="time"/>
+        <result column="pre_close" jdbcType="DECIMAL" property="preClose"/>
+        <result column="open" jdbcType="DECIMAL" property="open"/>
+        <result column="high" jdbcType="DECIMAL" property="high"/>
+        <result column="low" jdbcType="DECIMAL" property="low"/>
+        <result column="close" jdbcType="DECIMAL" property="close"/>
+        <result column="last" jdbcType="DECIMAL" property="last"/>
+        <result column="avg_price" jdbcType="DECIMAL" property="avgPrice"/>
+        <result column="sharestraded" jdbcType="INTEGER" property="sharesTraded"/>
+        <result column="turnover" jdbcType="DECIMAL" property="turnover"/>
+        <result column="shortshares" jdbcType="INTEGER" property="shortShares"/>
+        <result column="shortturnover" jdbcType="DECIMAL" property="shortTurnover"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="chg" jdbcType="DECIMAL" property="riseFall"/>
+        <result column="chg_pct" jdbcType="DECIMAL" property="increase"/>
+        <result column="fivemins_chg_pct" jdbcType="DECIMAL" property="fiveMinsChgPct"/>
+        <result column="twomonths_chg_pct" jdbcType="DECIMAL" property="twoMonthsChgPct"/>
+        <result column="yeartonow_chg_pct" jdbcType="DECIMAL" property="yearToNowChgPct"/>
+        <result column="monthtonow_chg_pct" jdbcType="DECIMAL" property="monthToNowChgPct"/>
+        <result column="total_equity" jdbcType="DECIMAL" property="totalEquity"/>
+        <result column="pe_ratio" jdbcType="DECIMAL" property="peRatio"/>
+        <result column="pe_TTM" jdbcType="DECIMAL" property="peTtm"/>
+        <result column="turnover_rate" jdbcType="DECIMAL" property="turnoverRate"/>
+        <result column="swing" jdbcType="DECIMAL" property="swing"/>
+        <result column="appointThan" jdbcType="DECIMAL" property="appointThan"/>
+        <result column="pb_ratio" jdbcType="DECIMAL" property="pbRatio"/>
+        <result column="fthigh" jdbcType="DECIMAL" property="fthigh"/>
+        <result column="quantity_relative_ratio" jdbcType="DECIMAL" property="quantityRelativeRatio"/>
+        <result column="ftlow" jdbcType="DECIMAL" property="ftlow"/>
+        <result column="dividend" jdbcType="DECIMAL" property="dividend"/>
+        <result column="dividend_lfy_rate" jdbcType="DECIMAL" property="dividendLFYRate"/>
+        <result column="dividend_ttm_rate" javaType="DECIMAL" property="dividendTTMRate"/>
+        <result column="history_high" jdbcType="DECIMAL" property="historyHigh"/>
+        <result column="history_low" jdbcType="DECIMAL" property="historyLow"/>
+        <result column="suspension" property="suspension"/>
+    </resultMap>
+    <insert id="batchSaveOrUpdate" parameterType="list">
+        REPLACE into t_stock_snapshot
+        (code,name,time,pre_close,open,high,low,close,last,avg_price,sharestraded,turnover,shortshares,shortturnover,chg,chg_pct,
+        fivemins_chg_pct,twomonths_chg_pct,yeartonow_chg_pct,monthtonow_chg_pct,total_equity,pe_ratio,pe_TTM,turnover_rate,swing,pb_ratio,fthigh,quantity_relative_ratio,
+        ftlow,dividend,dividend_lfy_rate,dividend_ttm_rate,history_high,history_low,suspension)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code},#{item.name},#{item.time},
+            #{item.preClose}, #{item.open}, #{item.high}, #{item.low}, #{item.close}, #{item.last},
+            #{item.avgPrice}, #{item.sharesTraded}, #{item.turnover}, #{item.shortShares}, #{item.shortTurnover},
+            #{item.riseFall},#{item.increase},
+            #{item.fiveMinsChgPct}, #{item.twoMonthsChgPct}, #{item.yearToNowChgPct}, #{item.monthToNowChgPct},
+            #{item.totalEquity}, #{item.peRatio},#{item.peTtm},
+            #{item.turnoverRate}, #{item.swing}, #{item.pbRatio}, #{item.fthigh}, #{item.quantityRelativeRatio},
+            #{item.ftlow}, #{item.dividend},#{item.dividendLFYRate}, #{item.dividendTTMRate},#{item.historyHigh},
+            #{item.historyLow}, #{item.suspension}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectStockDetail" parameterType="String" resultMap="baseResult">
+        SELECT s.id,
+               s.`code`,
+               s.`name`,
+               s.time,
+               s.pre_close,
+               s.`open`,
+               s.high,
+               s.low,
+               s.`close`,
+               s.last,
+               s.avg_price,
+               s.sharestraded,
+               s.turnover,
+               s.shortshares,
+               s.shortturnover,
+               s.create_time,
+               s.update_time,
+               s.chg,
+               s.chg_pct,
+               s.fivemins_chg_pct,
+               s.twomonths_chg_pct,
+               s.yeartonow_chg_pct,
+               s.monthtonow_chg_pct,
+               s.total_equity,
+               s.pe_ratio,
+               s.pe_TTM,
+               s.turnover_rate,
+               s.swing,
+               s.pb_ratio,
+               s.fthigh,
+               s.quantity_relative_ratio,
+               s.ftlow,
+               s.dividend,
+               s.dividend_lfy_rate,
+               dividend_ttm_rate,
+               s.history_high,
+               s.history_low,
+               d.suspension
+        FROM t_stock_snapshot AS s
+                 INNER JOIN t_stock_define AS d ON s.`code` = d.`code`
+        WHERE s.`code` = #{code}
+        ORDER BY s.time DESC
+        LIMIT 1
+    </select>
+
+</mapper>

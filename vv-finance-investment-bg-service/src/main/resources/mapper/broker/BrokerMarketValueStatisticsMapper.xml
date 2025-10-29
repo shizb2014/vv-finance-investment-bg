@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.info.mapper.BrokerMarketValueStatisticsMapper">
+
+    <insert id="insertBrokersMakValStatistics" parameterType="list">
+        replace into t_broker_market_value_statistics
+        (f001d,broker_id,broker_held_number,market_val,create_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.f001d},#{item.brokerId}, #{item.brokerHeldNumber},
+            #{item.marketVal},now())
+        </foreach>
+    </insert>
+
+</mapper>

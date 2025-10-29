@@ -1,0 +1,2 @@
+dubboExceptionFilter=com.vv.finance.investment.bg.filter.DubboExceptionFilter
+globalTraceFilter=com.vv.finance.investment.bg.filter.GlobalTraceFilter

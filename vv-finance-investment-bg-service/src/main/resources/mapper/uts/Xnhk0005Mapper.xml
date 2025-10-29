@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.Xnhk0005Mapper">
+  <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.uts.Xnhk0005">
+    <!--@mbg.generated-->
+    <!--@Table XNHK0005-->
+    <id column="CODE" jdbcType="VARCHAR" property="code" />
+    <result column="F001V" jdbcType="VARCHAR" property="f001v" />
+    <result column="F002V" jdbcType="VARCHAR" property="f002v" />
+    <result column="F003V" jdbcType="VARCHAR" property="f003v" />
+    <result column="Create_Date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="Modified_Date" jdbcType="TIMESTAMP" property="modifiedDate" />
+    <result column="XDBMASK" jdbcType="BIGINT" property="xdbmask" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    CODE, F001V, F002V, F003V, Create_Date, Modified_Date, XDBMASK
+  </sql>
+
+    <select id="listIndustryDefines" resultType="com.vv.finance.investment.bg.stock.info.StockDefine">
+      select concat('HY', code, '.hk') code, f001v name, f001v stock_name, 1 producttype, 12 stock_type, 0 suspension from XNHK0005;
+    </select>
+</mapper>

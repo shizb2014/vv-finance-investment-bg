@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.info.mapper.BrokerIndustryStatisticsMapper">
+
+    <delete id="deleteEarlyStatistics">
+        delete from t_broker_industry_statistics where f001d <![CDATA[<]]> #{f001d}
+    </delete>
+
+    <select id="getTopIndustry" resultType="java.lang.String">
+        SELECT
+            industry_name
+        FROM
+            `t_broker_industry_statistics`
+        WHERE
+            broker_id = #{brokerId}
+            AND F001D = #{f001d}
+        ORDER BY
+            market_val DESC
+        LIMIT 10
+    </select>
+
+    <select id="getIndustryStatistics"
+            resultType="com.vv.finance.investment.bg.stock.info.BrokerIndustryStatistics">
+        SELECT
+            *
+        FROM
+            `t_broker_industry_statistics`
+        WHERE
+            broker_id = #{brokerId}
+          AND F001D IN
+          <foreach collection="dateList" separator="," open="(" close=")" item="item">
+              #{item}
+          </foreach>
+          AND industry_name IN
+          <foreach collection="industryList" separator="," open="(" close=")" item="item">
+              #{item}
+          </foreach>
+        ORDER BY
+            F001D ASC,
+            market_val DESC;
+    </select>
+    <select id="selectListByRangeDate" resultType="com.vv.finance.investment.bg.stock.info.BrokerIndustryStatistics">
+        select f001d, broker_id, industry_name, market_val
+        from t_broker_industry_statistics
+        where f001d = #{startDate}
+    </select>
+
+
+    <insert id="insertIndustryMakValStatistics" parameterType="list">
+        insert into t_broker_industry_statistics
+        (f001d,broker_id,industry_name,market_val,create_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.f001d},#{item.brokerId}, #{item.industryName},
+            #{item.marketVal},now())
+        </foreach>
+    </insert>
+
+</mapper>

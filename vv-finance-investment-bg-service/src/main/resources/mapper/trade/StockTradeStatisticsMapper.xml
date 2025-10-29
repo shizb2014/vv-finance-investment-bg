@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vv.finance.investment.bg.stock.trade.mapper.StockTradeStatisticsMapper">
+    <insert id="batchSaveOrUpdate" parameterType="list">
+        insert into t_trade_statistics
+        (code,time,in_capital_total,in_capital_small,in_capital_mid,in_capital_large,
+        in_capital_xlarge,in_qty_total,in_qty_small,in_qty_mid,in_qty_large,in_qty_xlarge,
+        out_capital_total,out_capital_small,out_capital_mid,out_capital_large,out_capital_xlarge,out_qty_total,
+        out_qty_small,out_qty_mid,out_qty_large,out_qty_xlarge,create_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code},#{item.time},#{item.inCapitalTotal},
+            #{item.inCapitalSmall}, #{item.inCapitalMid}, #{item.inCapitalLarge}, #{item.inCapitalXLarge},
+            #{item.inQtyTotal}, #{item.inQtySmall}, #{item.inQtyMid}, #{item.inQtyLarge}, #{item.inQtyXLarge},
+            #{item.outCapitalTotal}, #{item.outCapitalSmall}, #{item.outCapitalMid}, #{item.outCapitalLarge},
+            #{item.outCapitalXLarge}, #{item.outQtyTotal},#{item.outQtySmall}, #{item.outQtyMid},
+            #{item.outQtyLarge},#{item.outQtyXLarge},now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        in_capital_total = values(in_capital_total),
+        in_capital_small = values(in_capital_small),
+        in_capital_mid = values(in_capital_mid),
+        in_capital_large = values(in_capital_large),
+        in_capital_xlarge = values(in_capital_xlarge),
+        in_qty_total = values(in_qty_total),
+        in_qty_small = values(in_qty_small),
+        in_qty_mid = values(in_qty_mid),
+        in_qty_large = values(in_qty_large),
+        in_qty_xlarge = values(in_qty_xlarge),
+        out_capital_total = values(out_capital_total),
+        out_capital_small = values(out_capital_small),
+        out_capital_mid = values(out_capital_mid),
+        out_capital_large = values(out_capital_large),
+        out_capital_xlarge = values(out_capital_xlarge),
+        out_qty_total = values(out_qty_total),
+        out_qty_small = values(out_qty_small),
+        out_qty_mid = values(out_qty_mid),
+        out_qty_large = values(out_qty_large),
+        out_qty_xlarge = values(out_qty_xlarge)
+    </insert>
+</mapper>

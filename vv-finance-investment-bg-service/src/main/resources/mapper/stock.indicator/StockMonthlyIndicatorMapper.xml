@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.indicator.mapper.StockMonthlyIndicatorMapper">
+
+    <insert id="insertOrUpdateBatch" parameterType="collection">
+        insert INTO t_stock_monthly_indicator  (code,date,ema12,ema26,diff,dea,macd,boll_upper,mid,boll_lower,
+        rsi6_up_average,rsi6_down_average,rsi6,rsi12_up_average,rsi12_down_average,rsi12,
+
+        k,d,j,dm_up_avg,dm_down,dm_up,dm_down_avg,tr,tr_avg,pdi,pdm,dx,
+        adx,adxr,wr,obv,sar,sar_facto,sar_up )
+        VALUES
+        <foreach collection="coll" separator="," item="item">
+            ( #{item.code},#{item.date},#{item.ema12},#{item.ema26},#{item.diff},#{item.dea},#{item.macd},#{item.bollUpper},#{item.mid},#{item.bollLower},
+            #{item.rsi6UpAverage},#{item.rsi6DownAverage},#{item.rsi6},
+            #{item.rsi12UpAverage},#{item.rsi12DownAverage},#{item.rsi12},
+
+            #{item.k},#{item.d},#{item.j},#{item.dmUpAvg},#{item.dmDown},#{item.dmUp},#{item.dmDownAvg},#{item.tr},#{item.trAvg},#{item.pdi},#{item.pdm},#{item.dx},
+            #{item.adx},#{item.adxr},#{item.wr},#{item.obv},#{item.sar},#{item.sarFacto},#{item.sarUp} )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        ema12=values(ema12),ema26=values(ema26),diff=values(diff),dea=values(dea),macd=values(macd)
+        , boll_upper=values(boll_upper),mid=values(mid),boll_lower=values(boll_lower),rsi6_up_average=values(rsi6_up_average)
+        ,rsi6_down_average=values(rsi6_down_average),rsi6=values(rsi6),rsi12_up_average=values(rsi12_up_average)
+        ,rsi12_down_average=values(rsi12_down_average),rsi12=values(rsi12),k=values(k),d=values(d),j=values(j)
+        ,dm_up_avg=values(dm_up_avg) ,dm_down=values(dm_down),dm_up=values(dm_up),dm_down_avg=values(dm_down_avg)
+        ,tr=values(tr),tr_avg=values(tr_avg),pdi=values(pdi),pdm=values(pdm),dx=values(dx)
+        ,adx=values(adx) ,adxr=values(adxr),wr=values(wr),obv=values(obv),sar=values(sar)
+        ,sar_facto=values(sar_facto) ,sar_up=values(sar_up)
+    </insert>
+</mapper>

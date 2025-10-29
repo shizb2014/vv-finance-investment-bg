@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.HkIisNewsHeadlineMapper">
+    <select id="selectNotice" resultType="com.vv.finance.investment.bg.entity.uts.HkIisNewsHeadlineBase">
+
+        SELECT
+            t.LINE_ID as lineId,
+            t.HEADLINE as headline,
+            t.DATE_LINE as dateLine
+        FROM
+            (
+            (
+        SELECT
+        DISTINCT
+            he.LINE_ID,
+            he.HEADLINE,
+            he.DATE_LINE
+        FROM
+            `hk_iis_news_headline` he
+            <if test="type!=1 and type !=9">
+                right join `hk_iis_news_cate_ref` ca ON he.LINE_ID = ca.LINE_ID and ca.CATEGORY_ID in
+                <foreach collection="values"  open="(" close=")" separator="," item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="type==9">
+                right join `hk_iis_news_cate_ref` ca ON he.LINE_ID = ca.LINE_ID and ca.CATEGORY_ID not in
+                <foreach collection="values"  open="(" close=")" separator="," item="item">
+                 #{item}
+                </foreach>
+            </if>
+            right JOIN `hk_iis_news_security_ref` se ON se.LINE_ID = he.LINE_ID
+            AND se.SEC_CODE = #{code,jdbcType=VARCHAR}
+        WHERE
+            he.ATTACHMENT_NUM != 0
+            AND he.LANGUAGE_ID = 2
+            ) UNION ALL
+            (
+        SELECT
+        DISTINCT
+            he.LINE_ID,
+            he.HEADLINE,
+            he.DATE_LINE
+        FROM
+            `hk_iis_news_headline_historic` he
+        <if test="type!=1 and type !=9">
+            right join `hk_iis_news_cate_ref_historic` ca ON he.LINE_ID = ca.LINE_ID and ca.CATEGORY_ID in
+            <foreach collection="values"  open="(" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="type==9">
+            right join `hk_iis_news_cate_ref_historic` ca ON he.LINE_ID = ca.LINE_ID and ca.CATEGORY_ID not in
+            <foreach collection="values"  open="(" close=")" separator="," item="item">
+                #{item}
+            </foreach>
+        </if>
+            right JOIN `hk_iis_news_security_ref_historic` se ON se.LINE_ID = he.LINE_ID
+            AND se.SEC_CODE = #{code,jdbcType=VARCHAR}
+        WHERE
+            he.ATTACHMENT_NUM != 0
+            AND he.LANGUAGE_ID = 2
+            )
+            ) t
+        ORDER BY
+            t.DATE_LINE DESC
+    </select>
+</mapper>

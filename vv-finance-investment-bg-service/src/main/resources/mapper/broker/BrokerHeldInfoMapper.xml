@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.info.mapper.BrokerHeldInfoMapper">
+
+    <update id="updateBrokerInfoEventV2" parameterType="list">
+        update t_broker_held_info set F013N = F013N / #{factor}, Modified_Date = now() where SECCODE = #{stockCode}
+        <if test="list != null and list.size() > 0">
+            and f001d in
+            <foreach collection="list" separator="," open="(" close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </update>
+
+    <insert id="batchSave" parameterType="list">
+        insert into t_broker_held_info
+        (seccode, f001d, f002d, f003n, f004n, f005n, f006n, f007n, f008n, f009n, f010n, f011n, f012n, f013n_org, f013n, f014n, f015n, f016n, f017n, f018n, f019n, f020n, f021n, f022n, f023n, f024n, f025n, f026n, f027n, f028n, create_date, modified_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.seccode}, #{item.f001d}, #{item.f002d}, #{item.f003n}, #{item.f004n}, #{item.f005n}, #{item.f006n}, #{item.f007n}, #{item.f008n}, #{item.f009n}, #{item.f010n}, #{item.f011n}, #{item.f012n}, #{item.f013nOrg}, #{item.f013n}, #{item.f014n}, #{item.f015n}, #{item.f016n}, #{item.f017n}, #{item.f018n}, #{item.f019n}, #{item.f020n}, #{item.f021n}, #{item.f022n}, #{item.f023n}, #{item.f024n}, #{item.f025n}, #{item.f026n}, #{item.f027n}, #{item.f028n},#{item.createDate},#{item.modifiedDate}
+            )
+        </foreach>
+    </insert>
+</mapper>

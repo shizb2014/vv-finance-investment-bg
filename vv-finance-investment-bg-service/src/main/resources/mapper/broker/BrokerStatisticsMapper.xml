@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.info.mapper.BrokerStatisticsMapper">
+
+    <insert id="batchSaveOrUpdate" parameterType="list">
+        REPLACE into t_broker_statistics
+        (seccode,f001d,f002v,f003n,f004n,f014v,end_price,market_val,create_date,modified_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.seccode},#{item.f001d},#{item.f002v},
+            #{item.f003n}, #{item.f004n}, #{item.f014v},
+            #{item.endPrice},#{item.marketVal},#{item.createDate},#{item.modifiedDate}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="batchSave" parameterType="list">
+        insert into t_broker_statistics
+        (seccode,f001d,f002v,f003n,f004n,f014v,end_price,market_val,end_price_org,f003n_org,create_date,modified_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.seccode},#{item.f001d},#{item.f002v},
+            #{item.f003n}, #{item.f004n}, #{item.f014v},
+            #{item.endPrice},#{item.marketVal},#{item.endPriceOrg},#{item.f003nOrg},#{item.createDate},#{item.modifiedDate}
+            )
+        </foreach>
+    </insert>
+
+    <select id="getBrokerHoldingShareList" resultType="java.lang.Long">
+        SELECT SUM(F003N) as F003N FROM t_broker_statistics
+        where F001D = #{f001d} and F002V in
+        <foreach collection="f002v" separator="," open="(" close=")" item="item">
+            #item
+        </foreach>
+        group by F002V
+    </select>
+
+    <select id="getBrokerHoldingShare" resultType="java.lang.Long">
+        SELECT SUM(F003N) as F003N FROM t_broker_statistics
+        where F001D = #{f001d} and F002V = #{f002v}
+    </select>
+
+    <select id="getBrokerStatisticsByDateAndId"
+            resultType="com.vv.finance.investment.bg.stock.info.BrokerStatistics">
+        SELECT SECCODE,F001D,F014V,market_val FROM t_broker_statistics
+        where F002V = #{f002v}
+        <if test="dateList != null and dateList.size() > 0">
+            and F001D in
+            <foreach collection="dateList" separator="," open="(" close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="codeSet != null and codeSet.size() > 0">
+            and SECCODE in
+            <foreach collection="codeSet" separator="," open="(" close=")" item="item">
+                  #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getIndustryList" resultType="com.vv.finance.investment.bg.stock.info.BrokerStatistics">
+        select F002V,F014V,SUM(market_val) as market_val from t_broker_statistics
+        where F002V=#{F002V} and F001D=#{F001D} and SECCODE not in
+        <foreach collection="quitCodeList" item="code" open="(" close=")" separator=",">
+            #{code}
+        </foreach>
+        group by F014V
+    </select>
+    <select id="getIndustryMarketValueTop10" resultType="java.lang.String">
+        SELECT
+            F014V
+        FROM
+            t_broker_statistics
+        WHERE
+            F002V = #{brokerId}
+          AND F001D = #{f001d}
+          AND SECCODE IN
+          <foreach collection="list" item="item" open="(" close=")" separator=",">
+              #{item}
+          </foreach>
+        GROUP BY
+            F014V
+        ORDER BY
+            SUM( market_val ) desc
+        limit 10
+    </select>
+
+    <select id="getIndustryMarketValueByf001d"
+            resultType="com.vv.finance.investment.bg.entity.broker.allBroker.IndustryMarketValue">
+        SELECT
+        F001D as date,
+        F014V as industryName,
+        SUM( market_val ) AS val
+        FROM
+        t_broker_statistics
+        WHERE
+        F002V = #{brokerId}
+        AND F001D IN
+        <foreach collection="f001d" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND SECCODE IN
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND F014V IN
+        <foreach collection="industry" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        GROUP BY
+        F001D,
+        F014V
+        ORDER BY
+        F001D ASC
+    </select>
+
+    <update id="updateBrokerStatisticsMarketVal" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            update t_broker_statistics
+            set market_val = #{item.marketVal}
+            where F001D = #{item.f001d} and F002V = #{item.f002v} and SECCODE = #{item.seccode}
+        </foreach>
+    </update>
+
+    <update id="updateBrokerStockEventV2" parameterType="list">
+        update t_broker_statistics set end_price = end_price * #{factor},f003n = f003n / #{factor}, Modified_Date =
+        now() where SECCODE = #{stockCode}
+        <if test="list != null and list.size() > 0">
+            and f001d in
+            <foreach collection="list" separator="," open="(" close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </update>
+
+<!--    <select id="getBrokerBydates" resultType="com.vv.finance.investment.bg.stock.info.BrokerStatistics">-->
+<!--        select F001D,F002V,SUM(F003N) as F003N,SUM(market_val) as market_val  from t_broker_statistics-->
+<!--        where  f001d = #{f001d}-->
+<!--        <if test="list != null and list.size() > 0">-->
+<!--            and SECCODE in-->
+<!--            <foreach collection="list" separator="," open="(" close=")" item="item">-->
+<!--                #{item}-->
+<!--            </foreach>-->
+<!--        </if>-->
+<!--        group by F001D,F002V-->
+<!--    </select>-->
+
+<!--    <select id="getBrokerByIndustry" resultType="com.vv.finance.investment.bg.stock.info.BrokerStatistics">-->
+<!--        select F001D,F002V,F014V,SUM(market_val) as market_val from t_broker_statistics-->
+<!--        where  f001d = #{f001d} and F014V is not null-->
+<!--        <if test="list != null and list.size() > 0">-->
+<!--            and SECCODE in-->
+<!--            <foreach collection="list" separator="," open="(" close=")" item="item">-->
+<!--                #{item}-->
+<!--            </foreach>-->
+<!--        </if>-->
+<!--        group by F001D,F002V,F014V-->
+<!--    </select>-->
+
+
+</mapper>

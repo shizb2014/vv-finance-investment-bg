@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.index.TIndexComponentMapper">
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.index.TIndexComponent">
+        <!--@mbg.generated-->
+        <!--@Table t_index_component-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="index_code" jdbcType="VARCHAR" property="indexCode"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="volume" jdbcType="BIGINT" property="volume"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="chg" jdbcType="DECIMAL" property="chg"/>
+        <result column="chg_pct" jdbcType="DECIMAL" property="chgPct"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, code, index_code, `name`, price, volume, amount, chg, chg_pct, create_time, update_time
+    </sql>
+
+    <insert id="batchInsert" parameterType="list">
+        REPLACE into t_index_component (code, index_code, name, price, volume, amount, chg, chg_pct)
+                values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code}, #{item.indexCode}, #{item.name},
+             #{item.price}, #{item.volume}, #{item.amount}, #{item.chg},
+             #{item.chgPct})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.Xnhk0311Mapper">
+
+    <select id="getByPrimary"
+            resultType="com.vv.finance.investment.bg.entity.information.CompanyTrendsMergeEntity">
+
+        SELECT x1.SECCODE,
+               #{type}                                                  type,
+               x2.F001V                                                 content,
+               x3.F001V                                                 content2,
+               x1.F001D                                                 releaseDate,
+               x1.F001D                                                 order_date,
+               x1.F001D                                                 date1,
+               NULL                                                     date2,
+               x1.XDBMASK                                               sxdbmask
+        FROM vv_uts.xnhk0311 x1
+                 LEFT JOIN vv_uts.xnhk0007 x2 ON x1.F002v = x2.CODE
+                 LEFT JOIN vv_uts.xnhk0006 x3 ON x1.F003v = x3.CODE
+        where x1.SECCODE = #{seccode}
+          and x1.F001D = #{F001D}
+          and x1.F003V = #{F003V}
+
+    </select>
+</mapper>

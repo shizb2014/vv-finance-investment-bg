@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.Xnhks0310Mapper">
+
+
+    <select id="getByPrimary"
+            resultType="com.vv.finance.investment.bg.entity.information.CompanyTrendsMergeEntity">
+
+        SELECT x.SECCODE,
+               #{type}                                  type,
+               x2.F001V                                 content,
+               x.F001D                                  releaseDate,
+               x.F003D                                  order_date,
+               x.F003D                                  date1,
+               x.XDBMASK                                sxdbmask
+        FROM vv_uts.XNHKS0310 x
+            LEFT JOIN vv_uts.xnhk0009 x2 ON x.F005V = x2.CODE
+        INNER JOIN (
+            select seccode, max(F001D) F001D, F003D from vv_uts.XNHKS0310 WHERE seccode = #{seccode}  GROUP BY seccode, F003D
+        ) t on x.seccode = t.seccode and x.F001D = t.F001D and x.F003D = t.F003D
+        where
+            x.SECCODE = #{seccode}
+          and x.F002V = #{F002V}
+
+
+    </select>
+</mapper>

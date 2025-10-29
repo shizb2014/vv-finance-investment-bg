@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.stock.quotes.CompanyTrandsMergeMapper">
+
+
+    <insert id="saveDupUpdate"
+            parameterType="com.vv.finance.investment.bg.entity.information.CompanyTrendsMergeEntity">
+
+        INSERT INTO t_company_trends_merge (`SECCODE`, `type`, `content`, `content2`, `releaseDate`, `order_date`,
+                                            `date1`, `date2`, `sxdbmask`, `uni`, `sub_type`)
+        VALUES (#{SECCODE}, #{type}, #{content}, #{content2}, #{releaseDate}, #{orderDate}, #{date1}, #{date2},
+                #{sxdbmask}, #{uni}, #{subType})
+
+        ON DUPLICATE KEY UPDATE SECCODE     = values(SECCODE),
+                                type        = values(type),
+                                content     = values(content),
+                                content2    = values(content2),
+                                releaseDate = values(releaseDate),
+                                order_date  = values(order_date),
+                                date1       = values(date1),
+                                date2       = values(date2),
+                                sxdbmask    = values(sxdbmask),
+                                uni         = values(uni),
+                                sub_type    = values(sub_type);
+
+
+    </insert>
+        <delete id="removeByUni">
+        delete
+        from t_company_trends_merge
+        where type = #{type}
+          and uni = #{uni}
+
+    </delete>
+
+    <insert id="batchSaveDupUpdate"
+            parameterType="java.util.List">
+        INSERT INTO t_company_trends_merge (SECCODE, type, content, content2, releaseDate, order_date,
+        date1, date2, sxdbmask, uni, sub_type)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.SECCODE}, #{item.type}, #{item.content}, #{item.content2}, #{item.releaseDate}, #{item.orderDate},
+            #{item.date1}, #{item.date2}, #{item.sxdbmask}, #{item.uni}, #{item.subType})
+        </foreach>
+        ON DUPLICATE KEY UPDATE SECCODE = values(SECCODE),
+        type = values(type),
+        content = values(content),
+        content2 = values(content2),
+        releaseDate = values(releaseDate),
+        order_date = values(order_date),
+        date1 = values(date1),
+        date2 = values(date2),
+        sxdbmask = values(sxdbmask),
+        uni = values(uni),
+        sub_type = values(sub_type);
+    </insert>
+
+    <select id="queryCompanyTrendsNum" parameterType="string"
+            resultType="com.vv.finance.investment.bg.entity.information.CompanyTrendsMergeEntity">
+        select SECCODE, order_date, type from t_company_trends_merge
+        where order_date >= #{startDate}
+        <if test="endDate != null and endDate != ''">
+            and order_date &lt;= #{endDate}
+        </if>
+    </select>
+
+</mapper>

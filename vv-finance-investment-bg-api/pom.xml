@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.vv.finance</groupId>
+		<artifactId>vv-finance-investment-bg</artifactId>
+		<version>dev0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>vv-finance-investment-bg-api</artifactId>
+	<name>vv-finance-investment-bg-api</name>
+	<description>Demo project for Spring Boot</description>
+	<version>dev0.0.1-SNAPSHOT</version>
+	<properties>
+		<java.version>1.8</java.version>
+		<baomidou.version>3.4.0</baomidou.version>
+<!--		<vv.project.version>1.0.0</vv.project.version>-->
+
+<!--		<quotation-stock-calc-common.version>0.0.1-SNAPSHOT</quotation-stock-calc-common.version>-->
+<!--		<lineshape-calc-common.version>0.0.1-SNAPSHOT</lineshape-calc-common.version>-->
+
+<!--		<vv.gateway-api.version>1.2.58-SNAPSHOT</vv.gateway-api.version>-->
+<!--		<vv.investment-common.version>1.2.94-SNAPSHOT</vv.investment-common.version>-->
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.vv.finance</groupId>-->
+			<!--<artifactId>vv-finance-investment-gateway-api</artifactId>-->
+<!--&lt;!&ndash;			<version>${vv.gateway-api.version}</version>&ndash;&gt;-->
+		<!--</dependency>-->
+		<dependency>
+			<groupId>com.vv.finance</groupId>
+			<artifactId>vv-finance-investment-common</artifactId>
+<!--			<version>${vv.investment-common.version}</version>-->
+		</dependency>
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.javakaffee</groupId>
+			<artifactId>kryo-serializers</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>kryo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.2.0</version>
+            <scope>compile</scope>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.vv.finance</groupId>-->
+<!--            <artifactId>vv-finance-quotation-stock-calc-common</artifactId>-->
+<!--&lt;!&ndash;            <version>${quotation-stock-calc-common.version}</version>&ndash;&gt;-->
+<!--        </dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.vv.finance</groupId>-->
+<!--			<artifactId>vv-finance-lineshape-calc-common</artifactId>-->
+<!--&lt;!&ndash;			<version>${lineshape-calc-common.version}</version>&ndash;&gt;-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.vv.finance</groupId>-->
+<!--			<artifactId>vv-finance-lineshape-calc-common</artifactId>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.vv.finance</groupId>-->
+<!--			<artifactId>vv-finance-lineshape-calc-api</artifactId>-->
+<!--		</dependency>-->
+
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.2.Final</version>
+		</dependency>
+        <dependency>
+            <groupId>com.vv.finance</groupId>
+            <artifactId>vv-finance-investment-gateway-api</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

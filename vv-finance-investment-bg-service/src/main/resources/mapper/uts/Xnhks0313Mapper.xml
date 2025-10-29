@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.Xnhks0313Mapper">
+
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.uts.Xnhks0313">
+            <id property="seccode" column="SECCODE" jdbcType="VARCHAR"/>
+            <id property="f002v" column="F002V" jdbcType="VARCHAR"/>
+            <result property="f001d" column="F001D" jdbcType="BIGINT"/>
+            <result property="f003d" column="F003D" jdbcType="BIGINT"/>
+            <result property="f004v" column="F004V" jdbcType="VARCHAR"/>
+            <result property="f005v" column="F005V" jdbcType="VARCHAR"/>
+            <result property="f006v" column="F006V" jdbcType="VARCHAR"/>
+            <result property="createDate" column="Create_Date" jdbcType="TIMESTAMP"/>
+            <result property="modifiedDate" column="Modified_Date" jdbcType="TIMESTAMP"/>
+            <result property="xdbmask" column="XDBMASK" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        SECCODE,F002V,F001D,
+        F003D,F004V,F005V,
+        F006V,Create_Date,Modified_Date,
+        XDBMASK
+    </sql>
+</mapper>

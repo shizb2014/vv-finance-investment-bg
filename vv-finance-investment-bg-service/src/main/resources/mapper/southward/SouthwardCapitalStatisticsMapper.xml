@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.southward.SouthwardCapitalStatisticsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.southward.SouthwardCapitalStatistics">
+        <id column="id" property="id" />
+        <result column="market" property="market" />
+        <result column="net_turnover_in" property="netTurnoverIn" />
+        <result column="net_buying_turnover" property="netBuyingTurnover" />
+        <result column="surplus_quota" property="surplusQuota" />
+        <result column="statistics_date" property="statisticsDate" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, market, net_turnover_in, net_buying_turnover, surplus_quota, statistics_date, create_time, update_time
+    </sql>
+    <insert id="saveOrUpdateBatch">
+        insert into t_southward_capital_statistics(
+        market,
+        net_turnover_in,
+        net_buying_turnover,
+        surplus_quota,
+        statistics_date,
+        create_time,
+        update_time
+        )
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (
+            #{entity.market},
+            #{entity.netTurnoverIn},
+            #{entity.netBuyingTurnover},
+            #{entity.surplusQuota},
+            #{entity.statisticsDate},
+            #{entity.createTime},
+            #{entity.updateTime}
+            )
+        </foreach>
+        on duplicate key update
+        market = values(market),
+        net_turnover_in = values(net_turnover_in),
+        net_buying_turnover = values(net_buying_turnover),
+        surplus_quota = values(surplus_quota),
+        statistics_date = values(statistics_date),
+        update_time = values(update_time)
+    </insert>
+    <select id="selectByMarket"
+            resultType="com.vv.finance.investment.bg.entity.southward.SouthwardCapitalStatistics">
+        select market,
+               net_turnover_in,
+               net_buying_turnover,
+               surplus_quota,
+               statistics_date
+        from t_southward_capital_statistics
+        where market = #{market}
+        order by statistics_date desc
+        limit #{limit}
+    </select>
+
+</mapper>

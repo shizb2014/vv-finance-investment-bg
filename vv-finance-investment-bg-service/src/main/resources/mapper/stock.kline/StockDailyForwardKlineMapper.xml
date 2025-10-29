@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.stock.kline.mapper.StockDailyForwardKlineMapper">
+    <insert id="batchInsert" parameterType="list">
+        insert into t_stock_daily_forward_kline (code,time,open,high,low,close,pre_close,volume,amount,chg,chg_pct,mode,adjhkt,
+        ma_5,ma_10,ma_15,ma_20,ma_30,ma_50,ma_60,ma_120)
+        values
+        <foreach collection="list" item="item"  separator=",">
+            (#{item.code},#{item.time},
+            #{item.open},#{item.high},#{item.low},#{item.close},
+            #{item.preClose},#{item.volume},#{item.amount},#{item.chg},
+            #{item.chgPct},#{item.mode},#{item.adjhkt},#{item.ma5},#{item.ma10},#{item.ma15},#{item.ma20},
+            #{item.ma30},#{item.ma50},#{item.ma60},#{item.ma120})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        open=values(open),high=values(high),low=values(low) ,close=values(close),pre_close=values(pre_close)
+        ,volume=values(volume),amount=values(amount) ,chg=values(chg),chg_pct=values(chg_pct)
+        ,ma_5=values(ma_5),ma_10=values(ma_10),ma_15=values(ma_15),ma_20=values(ma_20),ma_30=values(ma_30)
+        ,ma_50=values(ma_50) ,ma_60=values(ma_60),ma_120=values(ma_120)
+    </insert>
+</mapper>

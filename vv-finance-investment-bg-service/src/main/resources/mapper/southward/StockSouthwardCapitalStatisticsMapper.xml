@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.southward.StockSouthwardCapitalStatisticsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.southward.StockSouthwardCapitalStatistics">
+        <id column="id" property="id"/>
+        <result column="stock_id" property="stockId"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="today_net_turnover_in" property="todayNetTurnoverIn"/>
+        <result column="today_net_buying_shares" property="todayNetBuyingShares"/>
+        <result column="today_holding_rate" property="todayHoldingRate"/>
+        <result column="today_holding_market_value" property="todayHoldingMarketValue"/>
+        <result column="statistics_date" property="statisticsDate"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, stock_id, code, name, today_net_turnover_in, today_net_buying_shares, today_holding_rate, today_holding_market_value, statistics_date, create_time, update_time
+    </sql>
+    <insert id="saveOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into t_stock_southward_capital_statistics(
+        stock_id,
+        code,
+        name,
+        today_net_turnover_in,
+        today_net_buying_shares,
+        today_holding_rate,
+        today_holding_market_value,
+        statistics_date,
+        create_time,
+        update_time
+        )
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (
+            #{entity.stockId},
+            #{entity.code},
+            #{entity.name},
+            #{entity.todayNetTurnoverIn},
+            #{entity.todayNetBuyingShares},
+            #{entity.todayHoldingRate},
+            #{entity.todayHoldingMarketValue},
+            #{entity.statisticsDate},
+            #{entity.createTime},
+            #{entity.updateTime}
+            )
+        </foreach>
+        on duplicate key update
+        stock_id = values(stock_id),
+        code = values(code),
+        name = values(name),
+        today_net_turnover_in = values(today_net_turnover_in),
+        today_net_buying_shares = values(today_net_buying_shares),
+        today_holding_rate = values(today_holding_rate),
+        today_holding_market_value = values(today_holding_market_value),
+        statistics_date = values(statistics_date),
+        create_time = values(create_time),
+        update_time = values(update_time)
+    </insert>
+    <select id="selectByStatisticDate"
+            resultType="com.vv.finance.investment.bg.entity.southward.StockSouthwardCapitalStatistics">
+        select
+        <include refid="Base_Column_List"/>
+        from t_stock_southward_capital_statistics
+        where statistics_date  <![CDATA[ >= ]]> #{startDate}
+        AND statistics_date  <![CDATA[ <= ]]> #{endDate}
+        order by statistics_date desc
+    </select>
+    <select id="selectByStockCode"
+            resultType="com.vv.finance.investment.bg.entity.southward.StockSouthwardCapitalStatistics">
+        select statistics_date, today_holding_rate, today_net_turnover_in, today_net_buying_shares
+        from t_stock_southward_capital_statistics
+        where code = #{stockCode}
+    </select>
+
+</mapper>

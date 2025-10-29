@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.index.TIndexDailyIndicatorMapper">
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.index.TIndexDailyIndicator">
+        <!--@mbg.generated-->
+        <!--@Table t_index_daily_indicator-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+        <result column="ema12" jdbcType="DECIMAL" property="ema12"/>
+        <result column="ema26" jdbcType="DECIMAL" property="ema26"/>
+        <result column="diff" jdbcType="DECIMAL" property="diff"/>
+        <result column="dea" jdbcType="DECIMAL" property="dea"/>
+        <result column="macd" jdbcType="DECIMAL" property="macd"/>
+        <result column="upAverage" jdbcType="DECIMAL" property="upaverage"/>
+        <result column="downAverage" jdbcType="DECIMAL" property="downaverage"/>
+        <result column="rsi6" jdbcType="DECIMAL" property="rsi6"/>
+        <result column="rsi12" jdbcType="DECIMAL" property="rsi12"/>
+        <result column="rsi24" jdbcType="DECIMAL" property="rsi24"/>
+        <result column="k" jdbcType="DECIMAL" property="k"/>
+        <result column="d" jdbcType="DECIMAL" property="d"/>
+        <result column="j" jdbcType="DECIMAL" property="j"/>
+        <result column="sar" jdbcType="DECIMAL" property="sar"/>
+        <result column="upper" jdbcType="DECIMAL" property="upper"/>
+        <result column="mid" jdbcType="DECIMAL" property="mid"/>
+        <result column="lower" jdbcType="DECIMAL" property="lower"/>
+        <result column="dm_up_avg" jdbcType="DECIMAL" property="dmUpAvg"/>
+        <result column="dm_down" jdbcType="DECIMAL" property="dmDown"/>
+        <result column="dm_up" jdbcType="DECIMAL" property="dmUp"/>
+        <result column="dm_down_avg" jdbcType="DECIMAL" property="dmDownAvg"/>
+        <result column="tr" jdbcType="DECIMAL" property="tr"/>
+        <result column="tr_avg" jdbcType="DECIMAL" property="trAvg"/>
+        <result column="pdi" jdbcType="DECIMAL" property="pdi"/>
+        <result column="pdm" jdbcType="DECIMAL" property="pdm"/>
+        <result column="dx" jdbcType="DECIMAL" property="dx"/>
+        <result column="adx" jdbcType="DECIMAL" property="adx"/>
+        <result column="adxr" jdbcType="DECIMAL" property="adxr"/>
+        <result column="obv" jdbcType="DECIMAL" property="obv"/>
+        <result column="wr_14" jdbcType="DECIMAL" property="wr14"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, code, `date`, ema12, ema26, diff, dea, macd, upAverage, downAverage, rsi6, rsi12,
+        rsi24, `k`, d, j, sar, `upper`, mid, `lower`, dm_up_avg, dm_down, dm_up, dm_down_avg,
+        tr, tr_avg, pdi, pdm, dx, adx, adxr, obv, wr_14, create_time, update_time
+    </sql>
+
+    <insert id="batchInsert" parameterType="list">
+        REPLACE into t_index_daily_indicator (code, date, ema12, ema26, diff, dea, macd, upAverage, downAverage, rsi6,
+                                              rsi12, rsi24, k, d, j, sar, upper, mid, lower, dm_up_avg, dm_down, dm_up,
+                                              dm_down_avg, tr, tr_avg, pdi, pdm, dx, adx, adxr, obv, wr_14)
+                values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code}, #{item.date}, #{item.ema12},
+             #{item.ema26}, #{item.diff}, #{item.dea}, #{item.macd},
+             #{item.upaverage}, #{item.downaverage}, #{item.rsi6}, #{item.rsi12},
+             #{item.rsi24}, #{item.k}, #{item.d}, #{item.j},
+             #{item.sar}, #{item.upper}, #{item.mid}, #{item.lower},
+             #{item.dmUpAvg}, #{item.dmDown}, #{item.dmUp}, #{item.dmDownAvg},
+             #{item.tr}, #{item.trAvg}, #{item.pdi}, #{item.pdm},
+             #{item.dx}, #{item.adx}, #{item.adxr}, #{item.obv},
+             #{item.wr14})
+        </foreach>
+    </insert>
+</mapper>

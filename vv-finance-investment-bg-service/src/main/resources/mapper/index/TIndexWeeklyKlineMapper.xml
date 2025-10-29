@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.index.TIndexWeeklyKlineMapper">
+    <resultMap id="BaseResultMap" type="com.vv.finance.investment.bg.entity.index.TIndexWeeklyKline">
+        <!--@mbg.generated-->
+        <!--@Table t_index_weekly_kline-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="time" jdbcType="BIGINT" property="time"/>
+        <result column="open" jdbcType="DECIMAL" property="open"/>
+        <result column="high" jdbcType="DECIMAL" property="high"/>
+        <result column="low" jdbcType="DECIMAL" property="low"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="chg" jdbcType="DECIMAL" property="chg"/>
+        <result column="chg_pct" jdbcType="DECIMAL" property="chgPct"/>
+        <result column="ma_5" jdbcType="DECIMAL" property="ma5"/>
+        <result column="ma_10" jdbcType="DECIMAL" property="ma10"/>
+        <result column="ma_20" jdbcType="DECIMAL" property="ma20"/>
+        <result column="ma_30" jdbcType="DECIMAL" property="ma30"/>
+        <result column="ma_50" jdbcType="DECIMAL" property="ma50"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, code, `time`, `open`, high, low, amount, chg, chg_pct, ma_5, ma_10, ma_20, ma_30,
+        ma_50, create_time, update_time
+    </sql>
+
+    <insert id="batchInsert" parameterType="list">
+        REPLACE into t_index_weekly_kline (code, time, open, high, low, amount, chg, chg_pct, ma_5, ma_10, ma_20,
+                                           ma_30, ma_50)
+                values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code}, #{item.time}, #{item.open},
+             #{item.high}, #{item.low}, #{item.amount}, #{item.chg},
+             #{item.chgPct}, #{item.ma5}, #{item.ma10}, #{item.ma20}, #{item.ma30},
+             #{item.ma50})
+        </foreach>
+    </insert>
+</mapper>

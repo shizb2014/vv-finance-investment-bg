@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.Xnhk0207Mapper">
+
+    <select id="listByDbmask"
+            resultType="com.vv.finance.investment.bg.entity.information.CompanyTrendsMergeEntity">
+        SELECT x.SECCODE,
+               #{type}                                  type,
+               concat(
+                       '发布',
+                       CASE
+                           x.F006V
+                           WHEN 'I' THEN
+                               '中期'
+                           WHEN 'Q1' THEN
+                               '第一季度'
+                           WHEN 'Q2' THEN
+                               '第二季度'
+                           WHEN 'Q3' THEN
+                               '第三季度'
+                           WHEN 'Q4' THEN
+                               '第四季度'
+                           WHEN 'Q5' THEN
+                               '第五季度'
+                           WHEN 'Q6' THEN
+                               '第六季度'
+                           WHEN 'F' THEN
+                               '年度'
+                           WHEN 'P' THEN
+                               '上市前'
+                           ELSE '其他'
+                           END,
+                       '财报 净利润：',
+                       CASE
+                           WHEN ABS(x.F036N) >= 1000000000000 THEN
+                               CONCAT(ROUND(x.F036N / 1000000000000, 2), '万亿')
+                           WHEN ABS(x.F036N) >= 100000000 THEN
+                               CONCAT(ROUND(x.F036N / 100000000, 2), '亿')
+                           WHEN ABS(x.F036N) >= 10000 THEN
+                               CONCAT(ROUND(x.F036N / 10000, 2), '万')
+                           ELSE ROUND(x.F036N, 2)
+                           END,
+                       x2.F001V
+                   )                                    content,
+               x.F001D                                  releaseDate,
+               x.F001D                                  order_date,
+               x.F001D                                  date1,
+               x.XDBMASK                                sxdbmask,
+               md5(concat(#{code}, x.SECCODE, x.F002D, x.F006V)) uni
+        FROM vv_uts.xnhk0207 x
+                 LEFT JOIN XNHK0008 x2 ON x.F003V = x2.CODE
+        where x.xdbmask > #{dbmask}
+        order by x.xdbmask
+    </select>
+    <select id="getByPrimary"
+            resultType="com.vv.finance.investment.bg.entity.information.CompanyTrendsMergeEntity">
+        SELECT x.SECCODE,
+               #{type}                                  type,
+               concat(
+                       '发布',
+                       CASE
+                           x.F006V
+                           WHEN 'I' THEN
+                               '中期'
+                           WHEN 'Q1' THEN
+                               '第一季度'
+                           WHEN 'Q2' THEN
+                               '第二季度'
+                           WHEN 'Q3' THEN
+                               '第三季度'
+                           WHEN 'Q4' THEN
+                               '第四季度'
+                           WHEN 'Q5' THEN
+                               '第五季度'
+                           WHEN 'Q6' THEN
+                               '第六季度'
+                           WHEN 'F' THEN
+                               '年度'
+                           WHEN 'P' THEN
+                               '上市前'
+                           ELSE '其他'
+                           END,
+                       '财报 净利润：',
+                       CASE
+                           WHEN ABS(x.F036N) >= 1000000000000 THEN
+                               CONCAT(ROUND(x.F036N / 1000000000000, 2), '万亿')
+                           WHEN ABS(x.F036N) >= 100000000 THEN
+                               CONCAT(ROUND(x.F036N / 100000000, 2), '亿')
+                           WHEN ABS(x.F036N) >= 10000 THEN
+                               CONCAT(ROUND(x.F036N / 10000, 2), '万')
+                           ELSE ROUND(x.F036N, 2)
+                           END,
+                       x2.F001V
+                   )                                    content,
+               x.F001D                                  releaseDate,
+               x.F001D                                  order_date,
+               x.F001D                                  date1,
+               x.XDBMASK                                sxdbmask
+        FROM vv_uts.xnhk0207 x
+                 LEFT JOIN XNHK0008 x2 ON x.F003V = x2.CODE
+        INNER JOIN (
+            select seccode, max(f002d) f002d, f001d, f006v from vv_uts.xnhk0207 WHERE seccode = #{seccode} and F006V = #{F006V} GROUP BY seccode, f001d, f006v
+        ) t on x.seccode = t.seccode and x.f002d = t.f002d and x.f001d = t.f001d and x.f006v = t.f006v
+        where x.SECCODE = #{seccode}
+          and x.F002D = #{F002D}
+          and x.F006V = #{F006V}
+
+
+    </select>
+</mapper>

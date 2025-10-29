@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vv.finance.investment.bg.mapper.uts.Xnhks0503Mapper">
+
+    <select id="getLineId" resultType="string" >
+        SELECT
+            a.LINE_ID
+        FROM hk_iis_news_headline a
+                 left join hk_iis_news_cate_ref b on a.LINE_ID = b.line_id
+                 left join hk_iis_news_category c on b.CATEGORY_ID = c.CATEGORY_ID
+                 left join hk_iis_news_attachment d on a.LINE_ID = d.LINE_ID
+                 left join hk_iis_news_security_ref e on a.LINE_ID = e.LINE_ID
+        where a.LINE_ID in (select LINE_ID from hk_iis_news_security_ref where SEC_CODE =#{code})
+          and a.LANGUAGE_ID = '2' and c.DESC_CN = '上市文件'
+          and HEADLINE not in ('白色申請表格','黃色申請表格','綠色申請表格','藍色申請表格','粉紅色申請表格')
+          and ATTACHMENT_NUM != '0'
+        order by SEC_CODE;
+
+
+    </select>
+
+    <select id="listNewShareVo" parameterType="string" resultType="com.vv.finance.common.entity.quotation.f10.ComNewShareVo">
+        select x1.SECCODE SECCODE,x1.SECCODE stockCode, x2.F003V stockName, x1.F008N minPrice, x1.F009N maxPrice,
+        x1.F011N finalPrice, x1.F044V stockLink,
+        x1.F021N shareNum,x1.F013N entranceFee, CONCAT(UNIX_TIMESTAMP(x1.F005D),'000') subscribeStartDate,
+        CONCAT(UNIX_TIMESTAMP(x1.F006D),'000') subscribeEndDate, CONCAT(UNIX_TIMESTAMP(x3.F016D),'000') publicityDate,
+        CONCAT(UNIX_TIMESTAMP(x1.F002D),'000') marketDate from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where x1.F002D >= subdate(curdate(),date_format(curdate(),'%w')+6)
+        and x1.F031N is not null
+        and x1.F001V = 'Y'
+        and x2.F001V = 'Y'
+        and x3.F001V = 'Y'
+<!--        <if test="list != null">-->
+<!--            and x1.SECCODE in (-->
+<!--            <foreach collection="list" item="code" separator=",">-->
+<!--                #{code}-->
+<!--            </foreach>-->
+<!--            )-->
+<!--        </if>-->
+        order by x1.F002D desc, x1.XDBMASK desc, x2.XDBMASK desc, x3.XDBMASK desc
+    </select>
+
+    <select id="listNewShare" parameterType="string" resultType="com.vv.finance.common.entity.quotation.f10.ComNewShareVo">
+        select t.SECCODE stockCode,t1.F011N finalPrice from XNHKS0101 t join xnhks0503 t1 on t.SECCODE = t1.SECCODE and t.F007D = t1.F002D WHERE t.F007D = #{date} and t.F014V ='OS'
+    </select>
+
+    <select id="listNewShareVoByTime" parameterType="string" resultType="com.vv.finance.common.entity.quotation.f10.ComNewShareVo">
+        select b.SECCODE,b.stockCode,b.stockName,b.minPrice,b.maxPrice,b.finalPrice,b.stockLink,b.shareNum,b.entranceFee,
+               CONCAT(UNIX_TIMESTAMP(b.subscribeStartDate),'000') subscribeStartDate ,
+               CONCAT(UNIX_TIMESTAMP(b.subscribeEndDate),'000') subscribeEndDate,
+               CONCAT(UNIX_TIMESTAMP(b.publicityDate),'000') publicityDate,
+                CONCAT(UNIX_TIMESTAMP(b.marketDate),'000') marketDate,
+                CONCAT(UNIX_TIMESTAMP(b.orderDate),'000') orderDate from (
+        SELECT a.*,a.subscribeStartDate as orderDate FROM (
+        select x1.SECCODE SECCODE,
+               x1.SECCODE stockCode,
+               x2.F003V stockName,
+               x1.F008N minPrice,
+               x1.F009N maxPrice,
+        x1.F011N finalPrice,
+        x1.F044V stockLink,
+        x1.F021N shareNum,
+        x1.F013N entranceFee,
+        x1.F005D subscribeStartDate,
+        x1.F006D subscribeEndDate,
+        x3.F016D publicityDate,
+        x1.F002D marketDate
+        from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where
+        x1.F031N is not null
+        and x1.F001V = 'Y'
+        and x2.F001V = 'Y'
+        and x3.F001V = 'Y'
+        ) a
+        UNION ALL
+        SELECT a.*,a.subscribeEndDate as orderDate FROM (
+        select x1.SECCODE SECCODE,x1.SECCODE stockCode, x2.F003V stockName, x1.F008N minPrice, x1.F009N maxPrice,
+        x1.F011N finalPrice, x1.F044V stockLink,
+        x1.F021N shareNum,x1.F013N entranceFee,
+        x1.F005D subscribeStartDate,
+        x1.F006D subscribeEndDate,
+        x3.F016D publicityDate,
+        x1.F002D marketDate
+        from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where
+        x1.F031N is not null
+        and x1.F001V = 'Y'
+        and x2.F001V = 'Y'
+        and x3.F001V = 'Y'
+        ) a
+        UNION ALL
+        SELECT a.*,a.publicityDate as orderDate FROM (
+        select x1.SECCODE SECCODE,x1.SECCODE stockCode, x2.F003V stockName, x1.F008N minPrice, x1.F009N maxPrice,
+        x1.F011N finalPrice, x1.F044V stockLink,
+        x1.F021N shareNum,x1.F013N entranceFee,
+        x1.F005D subscribeStartDate,
+        x1.F006D subscribeEndDate,
+        x3.F016D publicityDate,
+        x1.F002D marketDate
+        from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where
+        x1.F031N is not null
+        and x1.F001V = 'Y'
+        and x2.F001V = 'Y'
+        and x3.F001V = 'Y'
+        ) a
+        UNION ALL
+        SELECT a.*,a.marketDate as orderDate FROM (
+        select x1.SECCODE SECCODE,x1.SECCODE stockCode, x2.F003V stockName, x1.F008N minPrice, x1.F009N maxPrice,
+        x1.F011N finalPrice, x1.F044V stockLink,
+        x1.F021N shareNum,x1.F013N entranceFee,
+        x1.F005D subscribeStartDate,
+        x1.F006D subscribeEndDate,
+        x3.F016D publicityDate,
+        x1.F002D marketDate
+        from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where
+        x1.F031N is not null
+        and x1.F001V = 'Y'
+        and x2.F001V = 'Y'
+        and x3.F001V = 'Y'
+        ) a) b
+        where b.orderDate is not null and b.orderDate >= #{startDate}
+        <if test="endDate != null and endDate != ''">
+            and b.orderDate &lt;= #{endDate}
+        </if>
+<!--        <if test="list != null">-->
+<!--        and b.SECCODE in (-->
+<!--        <foreach collection="list" item="code" separator=",">-->
+<!--            #{code}-->
+<!--        </foreach>-->
+<!--        )-->
+<!--        </if>-->
+        order by b.orderDate asc
+    </select>
+
+    <select id="listNewShareVoByTimeVVVV" parameterType="string" resultType="com.vv.finance.common.entity.quotation.f10.ComNewShareVo">
+        select x1.SECCODE SECCODE,x1.SECCODE stockCode, x2.F003V stockName, x1.F008N minPrice, x1.F009N maxPrice,
+        x1.F011N finalPrice, x1.F044V stockLink,
+        x1.F021N shareNum,x1.F013N entranceFee,
+        CONCAT(UNIX_TIMESTAMP(x1.F005D),'000') subscribeStartDate,
+        CONCAT(UNIX_TIMESTAMP(x1.F006D),'000') subscribeEndDate,
+        CONCAT(UNIX_TIMESTAMP(x3.F016D),'000') publicityDate,
+        CONCAT(UNIX_TIMESTAMP(x1.F002D),'000') marketDate from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where(
+        ( x1.F005D >= #{startDate}
+        <if test="endDate != null and endDate != ''">
+            and x1.F005D &lt;= #{endDate}
+        </if>) || ( x1.F006D >= #{startDate}
+        <if test="endDate != null and endDate != ''">
+            and x1.F006D &lt;= #{endDate}
+        </if>) || ( x3.F016D >= #{startDate}
+        <if test="endDate != null and endDate != ''">
+            and x3.F016D &lt;= #{endDate}
+        </if>) || ( x1.F002D >= #{startDate}
+        <if test="endDate != null and endDate != ''">
+            and x1.F002D &lt;= #{endDate}
+        </if>) )
+          and x1.F031N is not null
+          and x1.F001V = 'Y'
+          and x2.F001V = 'Y'
+          and x3.F001V = 'Y'
+
+        <if test="list != null">
+            and x1.SECCODE in (
+            <foreach collection="list" item="code" separator=",">
+                #{code}
+            </foreach>
+            )
+        </if>
+        order by x1.F002D desc, x1.XDBMASK desc, x2.XDBMASK desc, x3.XDBMASK desc
+    </select>
+
+    <select id="listNewShareVoByType" parameterType="string"
+            resultType="com.vv.finance.common.entity.quotation.f10.ComNewShareVo">
+        select * from (
+        SELECT SECCODE, F002D AS marketDate FROM (
+        select x1.SECCODE,
+        x1.F002D ,
+        x1.F005D ,
+        x1.F006D ,
+        x3.F016D
+        from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where x1.F031N is not null
+        and x1.F001V = 'Y'
+        and x2.F001V = 'Y'
+        and x3.F001V = 'Y') a
+        UNION ALL
+        SELECT SECCODE, F005D AS marketDate FROM (
+        select x1.SECCODE,
+        x1.F002D ,
+        x1.F005D ,
+        x1.F006D ,
+        x3.F016D
+        from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where x1.F031N is not null
+        and x1.F001V = 'Y'
+        and x2.F001V = 'Y'
+        and x3.F001V = 'Y') a
+        UNION ALL
+        SELECT SECCODE, F006D AS marketDate FROM (
+        select x1.SECCODE,
+        x1.F002D ,
+        x1.F005D ,
+        x1.F006D ,
+        x3.F016D
+        from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where  x1.F031N is not null
+        and x1.F001V = 'Y'
+        and x2.F001V = 'Y'
+        and x3.F001V = 'Y') a
+        UNION ALL
+        SELECT SECCODE, F016D AS marketDate FROM (
+        select x1.SECCODE,
+        x1.F002D ,
+        x1.F005D ,
+        x1.F006D ,
+        x3.F016D
+        from xnhks0503 x1 left join xnhks0501 x2
+        on x1.SECCODE = x2.SECCODE and x1.F002D = x2.F002D left join XNHKS0502 x3 on x1.SECCODE = x3.SECCODE and
+        x1.F002D = x3.F002D
+        where x1.F031N is not null
+        and x1.F001V = 'Y'
+        and x2.F001V = 'Y'
+        and x3.F001V = 'Y') a ) b
+        where b.marketDate is not null and b.marketDate >= #{startDate}
+        <if test="endDate != null and endDate != ''">
+            and b.marketDate &lt;= #{endDate}
+        </if>
+    </select>
+    <select id="findNewStockProspectusInfo" resultType="com.vv.finance.common.entity.common.ComNewStockProspectusVo"
+            parameterType="java.lang.Integer">
+        select
+            x3.SECCODE stockCode,x1.F003V stockName,  x3.F008N minPrice, x3.F009N maxPrice, x3.F011N finalPrice,
+            x3.F021N shareNum,x3.F013N entranceFee, CONCAT(UNIX_TIMESTAMP(x3.F005D),'000') subscribeStartDate,
+            CONCAT(UNIX_TIMESTAMP(x3.F006D),'000') subscribeEndDate, CONCAT(UNIX_TIMESTAMP(x2.F016D),'000') publicityDate,
+            CONCAT(UNIX_TIMESTAMP(x3.F002D),'000') marketDate
+        from xnhks0503 x3
+        left join XNHKS0502 x2 on x3.SECCODE = x2.SECCODE and x3.F002D = x2.F002D
+        left join XNHKS0501 x1 on x3.SECCODE = x1.SECCODE and x3.F002D = x1.F002D
+        where
+        x3.f001v='Y'
+        <if test="marketStatus==0">
+            and
+            (x3.F005D &lt;= #{time} and  x3.F006D >= #{time})
+            or
+            (x3.F005D = #{time} and  x3.F006D is null)
+            or
+            (x3.F006D = #{time} and  x3.F005D is null)
+            order by x3.F002D desc
+        </if>
+        <if test="marketStatus==1">
+            and (x3.F006D &lt; #{time} or (x3.F005D &lt; #{time} and  x3.F006D is null))
+            and x2.F016D > #{time}
+            order by x3.F002D desc
+        </if>
+        <if test="marketStatus==2">
+            and x2.F016D &lt;= #{time}
+            and x3.F002D > #{time}
+            order by x3.F002D desc
+        </if>
+    </select>
+</mapper>
