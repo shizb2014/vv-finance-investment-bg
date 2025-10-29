@@ -184,7 +184,6 @@ public class StockUtsNoticeV2Job {
         }
 
         HashMap<String, String> fileMap =getFileData(startTime, endTime);
-        log.info("=========修复公告 startTime: {}  endTime: {} /attachment文件数量 :{}", startTime,endTime, fileMap.size());
         if (fileMap.isEmpty()) {
             log.error("修复公告失败，获取不到 startTime: {}  endTime: {}  的公告文件", startTime,endTime);
             return ReturnT.FAIL;
